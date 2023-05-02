@@ -10,7 +10,7 @@ class ExcelFile extends Model
     use HasFactory;
 
     protected $dateFormat = 'd.m.Y';
-    protected $table = 'my_rows';
+    protected $table = 'rows';
     protected $fillable = [
         'id',
         'name',

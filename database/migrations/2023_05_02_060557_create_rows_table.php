@@ -13,7 +13,7 @@ class CreateRowsTable extends Migration
      */
     public function up()
     {
-        Schema::create('my_rows', function (Blueprint $table) {
+        Schema::create('rows', function (Blueprint $table) {
             $table->integer('id')->index();
             $table->string('name');
             $table->date('date');

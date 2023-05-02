@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\ExcelParser;
-use App\Models\ExelFile;
+use App\Jobs\ProcessExcelFile;
+use App\Models\ExcelFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
@@ -20,22 +21,29 @@ class ExcelLoadController extends Controller
     {
         $this->excelParser = $excelParser;
     }
+
+    /**
+     * Loading and Processing xlsx file
+     * @param Request $request
+     * @return string
+     * TBD get actual file storage location
+     */
     public function excelLoad(\Illuminate\Http\Request $request)
     {
-        $fileInfo = $request->file->getClientOriginalName();
+       /* $fileInfo = $request->file->getClientOriginalName();
         //$body = $request->file->getContent();
         $date = microtime(false);
         $data = [
             'name' => $fileInfo,
             'date' => $date,
-        ];
+        ];*/
         $path = Storage::path('excel.xlsx');
         $array = $this->excelParser->parse($path);
-        $this->excelParser->save($array);
-        dd($array);
-
+        $chunk = array_chunk($array, 1000);
+        foreach ($chunk as $index => $array) {
+            ProcessExcelFile::dispatch($this->excelParser, $array);
+        }
         //Storage::put('exel.xlsx',$body);
-
-        return $data;
+        return 'Файл сохранен!';
     }
 }
