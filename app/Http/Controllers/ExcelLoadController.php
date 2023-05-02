@@ -31,6 +31,7 @@ class ExcelLoadController extends Controller
         ];
         $path = Storage::path('excel.xlsx');
         $array = $this->excelParser->parse($path);
+        $this->excelParser->save($array);
         dd($array);
 
         //Storage::put('exel.xlsx',$body);

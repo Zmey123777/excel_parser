@@ -33,6 +33,17 @@ class ExcelParseService implements ExcelParser
 
     public function save($array): void
     {
-        //DB::create();
+        $isFirst = true;
+        foreach ($array as $element) {
+            if ($isFirst) {
+                $isFirst = false;
+                continue;
+            }
+            DB::table('my_rows')->insert([
+                'id' => $element['id'],
+                'name' => $element['name'],
+                'date' => $element['date']
+            ]);
+        }
     }
 }
