@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/excel', function () {
+    return view('excel');
+});
+
+Route::post('/upload-file', [\App\Http\Controllers\ExcelLoadController::class, 'excelLoad'])->name('fileUpload');
