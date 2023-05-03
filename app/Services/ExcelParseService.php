@@ -51,7 +51,7 @@ class ExcelParseService implements ExcelParser
      * TBD check methods logic
      */
 
-    public function save($array): void
+    public function store($array): void
     {
         $lastId = DB::table('rows')
             ->select('id')

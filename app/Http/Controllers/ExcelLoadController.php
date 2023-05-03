@@ -29,21 +29,16 @@ class ExcelLoadController extends Controller
      * TBD get actual file storage location
      */
     public function excelLoad(\Illuminate\Http\Request $request)
-    {
-       /* $fileInfo = $request->file->getClientOriginalName();
-        //$body = $request->file->getContent();
-        $date = microtime(false);
-        $data = [
-            'name' => $fileInfo,
-            'date' => $date,
-        ];*/
-        $path = Storage::path('excel.xlsx');
+    {   // Store file in Laravel storage
+        $file = $request->file('file')->store('excel');
+        $path = Storage::path($file);
+        // Parse file data into the database
         $array = $this->excelParser->parse($path);
         $chunk = array_chunk($array, 1000);
         foreach ($chunk as $index => $array) {
             ProcessExcelFile::dispatch($this->excelParser, $array);
         }
-        //Storage::put('exel.xlsx',$body);
+
         return 'Файл сохранен!';
     }
 }

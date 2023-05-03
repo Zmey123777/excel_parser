@@ -42,6 +42,6 @@ class ProcessExcelFile implements ShouldQueue
      */
     public function handle()
     {
-        $this->excelParser->save($this->array);
+        $this->excelParser->store($this->array);
     }
 }
