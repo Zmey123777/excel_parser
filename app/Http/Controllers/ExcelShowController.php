@@ -16,8 +16,8 @@ class ExcelShowController extends Controller
     {
         $rows = ExcelFile::orderBy('date')
             ->get()
-            ->groupBy(function($files) {
-                return Carbon::parse($files->date)->format('d,m,Y');
+            ->groupBy(function($fileRows) {
+                return Carbon::parse($fileRows->date)->format('d,m,Y');
             });
         $array = [];
         foreach ($rows as $index => $element) {
