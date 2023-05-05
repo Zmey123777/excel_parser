@@ -6,6 +6,7 @@ use App\Interfaces\ExcelParser;
 use App\Jobs\ProcessExcelFile;
 use App\Models\ExcelFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Redis;
@@ -29,9 +30,8 @@ class ExcelLoadController extends Controller
      * @return string
      * TBD get actual file storage location
      */
-    public function excelLoad(\Illuminate\Http\Request $request)
+    public function excelLoad(Request $request): string
     {
-
         // Validate the file type
         $request->validate(['file' => 'mimes:xlsx, csv']);
         // Store file in Laravel storage
@@ -47,7 +47,9 @@ class ExcelLoadController extends Controller
         /*$redis = new Redis();
         $redis->connect('localhost');
         return $redis->get('test');*/
-        return 'File uploaded';
+        File::delete($path);
+        return 'Файл загружен!';
+
     }
 
 }

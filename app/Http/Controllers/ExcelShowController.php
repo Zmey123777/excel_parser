@@ -8,7 +8,11 @@ use Illuminate\Http\Request;
 
 class ExcelShowController extends Controller
 {
-    public function show()
+    /**
+     * Method showing database rows groped and sorted by date
+     * @return array
+     */
+    public function show(): array
     {
         $rows = ExcelFile::orderBy('date')
             ->get()

@@ -33,7 +33,7 @@ class ExcelParseService implements ExcelParser
         $isFirst = true;
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $row) {
-                // Delete header element
+                // Avoiding reading header element
                 if ($isFirst) {
                     $isFirst = false;
                     continue;
@@ -51,7 +51,6 @@ class ExcelParseService implements ExcelParser
                     'date' => $dateToTimestamp,
                 ];
             }
-
         }
         return $array;
     }
@@ -64,15 +63,7 @@ class ExcelParseService implements ExcelParser
      */
     public function store($array): void
     {
-        $lastId = DB::table('rows')
-            ->select('id')
-            ->orderBy('id','desc')
-            ->limit(1)
-            ->get()->all();
         foreach ($array as $element) {
-            if($lastId) {
-                if ($element['id'] == $lastId[0]->id) return;
-            }
             DB::table('rows')->updateOrInsert([
                 'id' => $element['id'],
                 'name' => $element['name'],
