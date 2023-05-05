@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ExcelShowController extends Controller
 {
     /**
-     * Method showing database rows groped and sorted by date
+     * Method showing database rows grouped and sorted by date
      * @return array
      */
     public function show(): array

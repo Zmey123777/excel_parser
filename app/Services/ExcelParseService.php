@@ -42,13 +42,13 @@ class ExcelParseService implements ExcelParser
                 $id = $value[0];
                 $name = $value[1];
                 $date = $value[2];
-                $dateToTimestamp = DateTime::createFromFormat('j.n.y', $date,  new DateTimeZone('Asia/Novosibirsk'));
-                $dateToTimestamp = $dateToTimestamp->format('Y-m-d');
+                $date = DateTime::createFromFormat('j.n.y', $date,  new DateTimeZone('Asia/Novosibirsk'));
+                $date = $date->format('Y-m-d');
 
                 $array[] = [
                     'id' => $id,
                     'name' => $name,
-                    'date' => $dateToTimestamp,
+                    'date' => $date,
                 ];
             }
         }
