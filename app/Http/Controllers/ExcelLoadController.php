@@ -18,38 +18,47 @@ class ExcelLoadController extends Controller
      * @var ExcelParser
      */
     private $excelParser;
+    /**
+     * @var Request
+     */
+    private $request;
 
-    public function __construct(ExcelParser $excelParser)
+    public function __construct(ExcelParser $excelParser, Request $request)
     {
         $this->excelParser = $excelParser;
+        $this->request = $request;
     }
 
     /**
-     * Loading and processing xlsx file
-     * @param Request $request
+     * Load Excel file
      * @return string
-     * TBD get actual file storage location
      */
-    public function excelLoad(Request $request): string
+
+    public function fileLoad(): string
     {
+        $request = $this->request;
         // Validate the file type
-        $request->validate(['file' => 'mimes:xlsx, csv']);
+        $request->validate(['file' => 'max:400|mimes:xlsx, csv']);
         // Store file in Laravel storage
         $file = $request->file('file')->store('excel');
-        $path = Storage::path($file);
-        // Parse file data into the database
+        return Storage::path($file);
+    }
+
+    /**
+     * Processing xlsx file
+     * @return string
+     */
+    public function excelParse(): string
+    {
+        $path = self::fileLoad();
         $array = $this->excelParser->parse($path);
-        // Progressive file upload
+        // Progressive file import into the MySQL database
         $chunk = array_chunk($array, 1000);
         foreach ($chunk as $index => $array) {
             ProcessExcelFile::dispatch($this->excelParser, $array);
         }
-        /*$redis = new Redis();
-        $redis->connect('localhost');
-        return $redis->get('test');*/
-        File::delete($path);
-        return 'Файл загружен!';
-
+        //Storage::delete($path);
+        return $path;
     }
 
 }

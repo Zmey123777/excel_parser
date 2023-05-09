@@ -21,5 +21,5 @@ Route::get('/excel', function () {
     return view('excel');
 })->middleware('auth.basic');
 
-Route::post('/upload-file', [\App\Http\Controllers\ExcelLoadController::class, 'excelLoad'])->name('fileUpload');
+Route::post('/upload-file', [\App\Http\Controllers\ExcelLoadController::class, 'excelParse'])->name('fileUpload');
 Route::get('/show', [\App\Http\Controllers\ExcelShowController::class, 'show']);
